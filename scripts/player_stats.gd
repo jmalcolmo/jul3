@@ -10,6 +10,7 @@ extends Resource
 @export var armor: float = 0.0 # flat damage reduction per hit (min 1 damage taken)
 @export var attack_damage: float = 10.0
 @export var attack_speed: float = 1.25 # shots per second
+@export var pickup_radius: float = 80.0 # radius (px) within which XP is drawn to the player
 
 
 func attack_interval() -> float:

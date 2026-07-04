@@ -12,6 +12,7 @@ const UPGRADES: Array[Dictionary] = [
 	{"id": "hp_regen", "name": "HP Regen", "description": "+1 HP per second"},
 	{"id": "move_speed", "name": "Move Speed", "description": "+10% move speed"},
 	{"id": "armor", "name": "Armor", "description": "+1 armor (flat damage reduction)"},
+	{"id": "pickup_radius", "name": "Pickup Radius", "description": "+25% XP pickup radius"},
 ]
 
 
@@ -40,5 +41,8 @@ static func apply(id: String, player: Player) -> void:
 			stats.move_speed *= 1.10
 		"armor":
 			stats.armor += 1.0
+		"pickup_radius":
+			stats.pickup_radius *= 1.25
+			player.update_pickup_radius()
 		_:
 			push_warning("Unknown upgrade id: %s" % id)

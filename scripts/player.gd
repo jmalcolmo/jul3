@@ -15,6 +15,8 @@ var xp: int = 0
 var _dead := false
 
 @onready var weapon: Weapon = $Weapon
+@onready var pickup_area: Area2D = $PickupArea
+@onready var _pickup_shape: CollisionShape2D = $PickupArea/CollisionShape2D
 
 
 func _ready() -> void:
@@ -22,8 +24,23 @@ func _ready() -> void:
 		stats = PlayerStats.new()
 	hp = stats.max_hp
 	weapon.stats = stats
+	pickup_area.area_entered.connect(_on_pickup_area_entered)
+	update_pickup_radius()
 	health_changed.emit(hp, stats.max_hp)
 	xp_changed.emit(xp, xp_required())
+
+
+## Resizes the pickup-radius area to match `stats.pickup_radius`. Call after
+## an upgrade changes the radius so the new value takes effect immediately.
+func update_pickup_radius() -> void:
+	var circle := _pickup_shape.shape as CircleShape2D
+	if circle != null:
+		circle.radius = stats.pickup_radius
+
+
+func _on_pickup_area_entered(area: Area2D) -> void:
+	if area is XpPickup:
+		area.attract_to(self)
 
 
 func _physics_process(delta: float) -> void:
